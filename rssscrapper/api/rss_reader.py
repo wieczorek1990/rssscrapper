@@ -31,12 +31,11 @@ class RSSReader:
     def parse(self, content):
         currencies = []
         root = ElementTree.fromstring(content)
-        exchange_rates = root.findall('.//cb:exchangeRate', self.NAMESPACES)
-        for exchange_rate in exchange_rates:
-            base_currency = exchange_rate.find('./cb:baseCurrency', self.NAMESPACES)
-            target_currency = exchange_rate.find('./cb:targetCurrency', self.NAMESPACES)
-            value = exchange_rate.find('./cb:value', self.NAMESPACES)
-            currencies.append((base_currency, target_currency, value))
+        exchange_rate = root.find('.//cb:exchangeRate', self.NAMESPACES)
+        base_currency = exchange_rate.find('./cb:baseCurrency', self.NAMESPACES)
+        target_currency = exchange_rate.find('./cb:targetCurrency', self.NAMESPACES)
+        value = exchange_rate.find('./cb:value', self.NAMESPACES)
+        currencies.append((base_currency, target_currency, value))
         return currencies
 
     def update_or_create(self, currencies):
