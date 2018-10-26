@@ -3,6 +3,8 @@ rssscrapper
 
 Tried my best, running fast is hard.
 
+Time spent: 4h
+
 # Issued commands
 
 ```
@@ -10,18 +12,24 @@ django-admin startproject rssscrapper
 python3 manage.py startapp api
 python3 manage.py makemigrations
 python3 manage.py migrate
-python3 manage.py runserver
 ```
 
 # How to test
 
 ```
-python3 ./manage.py currency usd
-python3 ./manage.py currency usd pln
+python3 manage.py currency usd
+python3 manage.py currency usd pln
+python3 manage.py runserver
+curl localhost:8000/api/currencies/
 ```
+
+# Architecture
+
+Django --> DRF --> list route /api/currencies/
+|
+--> command to load currencies (currency)
 
 # TODO
 
-* API
 * dockerization
 * safe settings.py
