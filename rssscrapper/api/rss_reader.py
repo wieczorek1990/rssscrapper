@@ -1,16 +1,26 @@
+import decimal
 import requests
+from xml.etree import ElementTree
+
+from api.models import ExchangeRate
 
 
 class RSSReader:
+    NAMESPACES = {
+        'cb': 'http://www.cbwiki.net/wiki/index.php/Specification_1.1'
+    }
+
     def __init__(self, currency):
         self.currency = currency
 
     def process(self):
         try:
             content = self.download()
-            fields = self.parse(content)
-            self.create_or_update(fields)
-        except:
+            currencies = self.parse(content)
+            self.update_or_create(currencies)
+        # TODO(lwieczorek): figure out exceptions
+        except Exception as e:
+            print(e)
             return False
         return True
 
@@ -19,13 +29,20 @@ class RSSReader:
         return requests.get(url).content
 
     def parse(self, content):
-        return []
+        currencies = []
+        root = ElementTree.fromstring(content)
+        exchange_rates = root.findall('.//cb:exchangeRate', self.NAMESPACES)
+        for exchange_rate in exchange_rates:
+            base_currency = exchange_rate.find('./cb:baseCurrency', self.NAMESPACES)
+            target_currency = exchange_rate.find('./cb:targetCurrency', self.NAMESPACES)
+            value = exchange_rate.find('./cb:value', self.NAMESPACES)
+            currencies.append((base_currency, target_currency, value))
+        return currencies
 
-    def create_or_update(self, fields):
-        pass
-
-
-if __name__ == '__main__':
-    reader = RSSReader('usd')
-    result = reader.download()
-    print(result)
+    def update_or_create(self, currencies):
+        for base_currency, target_currency, value in currencies:
+            ExchangeRate.objects.update_or_create(
+                base_currency=base_currency.text,
+                target_currency=target_currency.text,
+                defaults={'value': value.text}
+            )

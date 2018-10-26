@@ -1,0 +1,22 @@
+rssscrapper
+===========
+
+Tried my best, running fast is hard.
+
+# Issued commands
+
+```
+django-admin startproject rssscrapper
+python3 manage.py startapp api
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+python3 ./manage.py currency usd
+python3 ./manage.py currency usd pln
+```
+
+# TODO
+
+* API
+* dockerization
+* safe settings.py

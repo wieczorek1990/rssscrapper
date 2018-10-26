@@ -1,2 +1,4 @@
 .idea/
 *.pyc
+rssscrapper/db.sqlite3
+
