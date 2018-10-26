@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from api.views import ExchangeRateView
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/currencies/', ExchangeRateView.as_view())
 ]
