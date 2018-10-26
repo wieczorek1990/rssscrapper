@@ -11,16 +11,25 @@ Time spent: 4h
 django-admin startproject rssscrapper
 python3 manage.py startapp api
 python3 manage.py makemigrations
-python3 manage.py migrate
 ```
 
 # How to test
 
 ```
+python3 manage.py migrate
 python3 manage.py currency usd
 python3 manage.py currency usd pln
 python3 manage.py runserver
 curl localhost:8000/api/currencies/
+
+$ python3 manage.py shell
+Python 3.6.6 (default, Sep 12 2018, 18:26:19)
+[GCC 8.0.1 20180414 (experimental) [trunk revision 259383]] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from api.models import ExchangeRate
+>>> ExchangeRate.objects.all()
+<QuerySet [<ExchangeRate: EUR -> USD: 1.15>]>
 ```
 
 # Architecture
