@@ -1,9 +1,7 @@
 rssscrapper
 ===========
 
-Tried my best, running fast is hard.
-
-Time spent: 4h
+Time spent: 5h
 
 # Issued commands
 
@@ -15,18 +13,29 @@ python3 manage.py makemigrations
 
 # How to test
 
+Assuming you have fish shell (`sudo apt install -y fish`).
+
 ```
-python3 manage.py migrate
+cd rssscapper
 python3 manage.py currency usd
 python3 manage.py currency usd pln
-python3 manage.py runserver
+./run.fish
 curl localhost:8000/api/currencies/
+python3 manage.py shell
+>>> from api.models import ExchangeRate
+>>> ExchangeRate.objects.all()
+<QuerySet [<ExchangeRate: EUR -> USD: 1.15>]>
+```
 
-$ python3 manage.py shell
-Python 3.6.6 (default, Sep 12 2018, 18:26:19)
-[GCC 8.0.1 20180414 (experimental) [trunk revision 259383]] on linux
-Type "help", "copyright", "credits" or "license" for more information.
-(InteractiveConsole)
+or use Docker:
+
+```
+docker-compose up
+set did (docker ps | grep rssscrapper_django | tr -s ' ' | cut -f 1 -d ' ')
+docker exec -it $did python3 rssscrapper/manage.py currency usd
+docker exec -it $did python3 rssscrapper/manage.py currency usd pln
+curl localhost/api/currencies
+docker exec -it $did python3 manage.py shell
 >>> from api.models import ExchangeRate
 >>> ExchangeRate.objects.all()
 <QuerySet [<ExchangeRate: EUR -> USD: 1.15>]>
@@ -36,9 +45,4 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 Django --> DRF --> list route /api/currencies/
 |
---> command to load currencies (currency)
-
-# TODO
-
-* dockerization
-* safe settings.py
+--> command to fetch currencies (currency)
