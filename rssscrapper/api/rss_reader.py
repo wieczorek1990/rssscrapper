@@ -1,4 +1,4 @@
-import decimal
+import logging
 
 import requests
 from xml.etree import ElementTree
@@ -20,21 +20,26 @@ class RSSReader:
             currencies = self.parse(content)
             self.update_or_create(currencies)
         except ElementTree.ParseError as e:
-            print(e)
+            logging.error(e)
             return False
         return True
 
     def download(self):
-        url = 'https://www.ecb.europa.eu/rss/fxref-{}.html'.format(self.currency.lower())
+        url = 'https://www.ecb.europa.eu/rss/fxref-{}.html'\
+                .format(self.currency.lower())
         return requests.get(url).content
 
     def parse(self, content):
         currencies = []
         root = ElementTree.fromstring(content)
-        exchange_rate = root.find('.//cb:exchangeRate', self.NAMESPACES)
-        base_currency = exchange_rate.find('./cb:baseCurrency', self.NAMESPACES)
-        target_currency = exchange_rate.find('./cb:targetCurrency', self.NAMESPACES)
-        value = exchange_rate.find('./cb:value', self.NAMESPACES)
+        exchange_rate = root.find('.//cb:exchangeRate',
+                                  self.NAMESPACES)
+        base_currency = exchange_rate.find('./cb:baseCurrency',
+                                           self.NAMESPACES)
+        target_currency = exchange_rate.find('./cb:targetCurrency',
+                                             self.NAMESPACES)
+        value = exchange_rate.find('./cb:value',
+                                   self.NAMESPACES)
         currencies.append((base_currency, target_currency, value))
         return currencies
 
