@@ -39,7 +39,9 @@ docker exec -it $did python3 manage.py shell
 # Architecture
 
 Django --> DRF --> list route /api/currencies/
+
 |
+
 --> command to fetch currencies (currency)
 
 # Issued commands
