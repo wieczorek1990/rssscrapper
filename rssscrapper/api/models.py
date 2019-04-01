@@ -1,7 +1,6 @@
 from django.db import models
 
 
-# TODO(lwieczorek): figure out rateType
 class ExchangeRate(models.Model):
     base_currency = models.CharField(max_length=3)
     target_currency = models.CharField(max_length=3)

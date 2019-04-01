@@ -1,4 +1,5 @@
 import decimal
+
 import requests
 from xml.etree import ElementTree
 
@@ -18,8 +19,7 @@ class RSSReader:
             content = self.download()
             currencies = self.parse(content)
             self.update_or_create(currencies)
-        # TODO(lwieczorek): figure out exceptions
-        except Exception as e:
+        except ElementTree.ParseError as e:
             print(e)
             return False
         return True
