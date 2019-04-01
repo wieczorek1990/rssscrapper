@@ -1,15 +1,9 @@
 rssscrapper
 ===========
 
-Time spent: 5h
+Currencies scrapper challenge.
 
-# Issued commands
-
-```
-django-admin startproject rssscrapper
-python3 manage.py startapp api
-python3 manage.py makemigrations
-```
+Time spent: 6h
 
 # How to test
 
@@ -46,3 +40,13 @@ docker exec -it $did python3 manage.py shell
 Django --> DRF --> list route /api/currencies/
 |
 --> command to fetch currencies (currency)
+
+# Issued commands
+
+```
+django-admin startproject rssscrapper
+python3 manage.py startapp api
+python3 manage.py makemigrations
+python3 manage.py createsuperuser
+```
+
